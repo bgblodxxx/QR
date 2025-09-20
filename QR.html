@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator QR Code Kustom</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+        
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            opacity: 0.9;
+        }
+        
+        .content {
+            display: flex;
+            padding: 0;
+        }
+        
+        .options-panel {
+            background-color: #f9fafc;
+            padding: 25px;
+            width: 40%;
+            border-right: 1px solid #eaeaea;
+        }
+        
+        .option-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background-color: #eef2f7;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .tab {
+            padding: 10px;
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .option-content {
+            display: none;
+        }
+        
+        .option-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .preview-panel {
+            padding: 25px;
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .qr-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            text-align: center;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #qrcode {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .download-btn {
+            background-color: var(--success);
+            margin-top: 10px;
+        }
+        
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payment-option:hover {
+            border-color: var(--primary);
+        }
+        
+        .payment-option.active {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .payment-icon {
+            width: 30px;
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .options-panel, .preview-panel {
+                width: 100%;
+            }
+        }
+    </style>
+    <!-- QRCode.js included as inline script to work in Acode -->
+    <script>
+        // Inline version of QRCode.js library
+        !function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.QRCode=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){var QRCode;QRCode=function(){function e(e,t){this._htOption={width:256,height:256,typeNumber:4,colorDark:"#000000",colorLight:"#ffffff",correctLevel:2},this._htOption=t||{},this._oQRCode=null,"string"==typeof e&&(e=document.getElementById(e)),this._oCanvas=e,this._elCanvas=this._oCanvas.tagName.toLowerCase()==="canvas",this._elImage=this._oCanvas.tagName.toLowerCase()==="img",this._elDiv=this._oCanvas.tagName.toLowerCase()==="div",this._oContext=this._elCanvas?this._oCanvas.getContext("2d"):null,this._bIsPainted=!1,this._aSupportDataURI=null,this._android=function(){var e=navigator.userAgent.toLowerCase();return e.indexOf("android")>0&&e.indexOf("mozilla")>0&&e.indexOf("applewebkit")>0}(),this.makeCode(this._htOption.text||"https://github.com/252860883/QRCode")}return e.prototype.makeCode=function(e){if(this._oQRCode=new QRCodeModel(_getTypeNumber(this._htOption.typeNumber,e),this._htOption.correctLevel),this._oQRCode.addData(e),this._oQRCode.make(),this._bIsPainted=!1,this._elImage)this._oCanvas.src=this.makeImage();else if(this._elDiv){this._oCanvas.innerHTML="";for(var t=0;t<this._oQRCode.getModuleCount();t++)for(var n=0;n<this._oQRCode.getModuleCount();n++){var r=document.createElement("div");r.style.position="absolute",r.style.left=n*this._htOption.width/this._oQRCode.getModuleCount()+"px",r.style.top=t*this._htOption.height/this._oQRCode.getModuleCount()+"px",r.style.width=this._htOption.width/this._oQRCode.getModuleCount()+"px",r.style.height=this._htOption.height/this._oQRCode.getModuleCount()+"px",r.style.backgroundColor=this._oQRCode.isDark(t,n)?this._htOption.colorDark:this._htOption.colorLight,this._oCanvas.appendChild(r)}}else this.makeImage()},e.prototype.makeImage=function(){if(this._bIsPainted)return;this._oContext||(this._oContext=this._oCanvas.getContext("2d"));for(var e=this._oQRCode.getModuleCount(),t=this._htOption.width/e,n=this._htOption.height/e,r=0;r<e;r++)for(var s=0;s<e;s++){this._oContext.fillStyle=this._oQRCode.isDark(r,s)?this._htOption.colorDark:this._htOption.colorLight;var i=s*t,o=r*n;this._oContext.fillRect(i,o,t,n)}this._bIsPainted=!0;var u=this._oCanvas.toDataURL("image/png");return this._android&&this._aSupportDataURI===null&&(this._aSupportDataURI=this._checkSupportDataURI()),this._android&&this._aSupportDataURI===!1?this._safeSetDataURI(u):u},e.prototype._safeSetDataURI=function(e){for(var t=this._oCanvas.getAttribute("src"),n=0;n<10;n++)try{return this._oCanvas.getAttribute("src",e),void setTimeout(function(){this._oCanvas.setAttribute("src",t)}.bind(this),50)}catch(r){}console.log("Can't set in IE11: unsafe attempt to set dataURI")},e.prototype._checkSupportDataURI=function(){var e=document.createElement("img"),t=!1;try{e.setAttribute("src","data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="),t=1===e.width&&1===e.height}catch(n){t=!1}return this._aSupportDataURI=t},e}();function _getTypeNumber(e,t){if(e>0)return e;for(var n=1;n<40;n++){for(var r=QRRSBlock.getRSBlocks(n,2),s=0,i=0;i<r.length;i++)s+=r[i].dataCount;for(var o=s-r.length*3,u=0,a=0;a<t.length;a++)o+=t[a].length;if(u=o<=s)break}return n}return e}()
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Generator QR Code Kustom</h1>
+            <p>Buat QR code untuk teks, gambar, atau pembayaran</p>
+        </header>
+        
+        <div class="content">
+            <div class="options-panel">
+                <div class="option-tabs">
+                    <div class="tab active" data-tab="text">Teks</div>
+                    <div class="tab" data-tab="image">Gambar</div>
+                    <div class="tab" data-tab="payment">Pembayaran</div>
+                </div>
+                
+                <div class="option-content active" id="text-content">
+                    <div class="form-group">
+                        <label for="text-input">Masukkan Teks</label>
+                        <textarea id="text-input" class="form-control" rows="5" placeholder="Ketik teks atau URL di sini...">https://github.com</textarea>
+                    </div>
+                    <button id="generate-text" class="btn">Generate QR Code</button>
+                </div>
+                
+                <div class="option-content" id="image-content">
+                    <div class="form-group">
+                        <label for="image-upload">Unggah Gambar</label>
+                        <input type="file" id="image-upload" class="form-control" accept="image/*">
+                    </div>
+                    <button id="generate-image" class="btn">Generate QR Code</button>
+                </div>
+                
+                <div class="option-content" id="payment-content">
+                    <div class="form-group">
+                        <label>Pilih Metode Pembayaran</label>
+                        
+                        <div class="payment-option active" data-payment="dana">
+                            <svg class="payment-icon" viewBox="0 0 24 24" fill="#00A5E0">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13.5h2v7h-2v-7zm1 10.5c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
+                            </svg>
+                            <span>DANA</span>
+                        </div>
+                        
+                        <div class="payment-option" data-payment="gopay">
+                            <svg class="payment-icon" viewBox="0 0 24 24" fill="#00AA13">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13.5h2v7h-2v-7zm1 10.5c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
+                            </svg>
+                            <span>GoPay</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="payment-amount">Jumlah Pembayaran</label>
+                        <input type="number" id="payment-amount" class="form-control" placeholder="Masukkan jumlah" value="10000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="payment-message">Pesan (Opsional)</label>
+                        <input type="text" id="payment-message" class="form-control" placeholder="Pesan untuk penerima">
+                    </div>
+                    
+                    <button id="generate-payment" class="btn">Generate QR Code</button>
+                </div>
+            </div>
+            
+            <div class="preview-panel">
+                <div class="qr-container">
+                    <div id="qrcode"></div>
+                    <p>QR Code akan muncul di sini</p>
+                </div>
+                <button id="download-btn" class="btn download-btn" disabled>Download QR Code</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const optionTabs = document.querySelectorAll('.tab');
+            const optionContents = document.querySelectorAll('.option-content');
+            const paymentOptions = document.querySelectorAll('.payment-option');
+            const qrcodeDiv = document.getElementById('qrcode');
+            const downloadBtn = document.getElementById('download-btn');
+            let currentQRCode = null;
+            
+            // Tab switching
+            optionTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    
+                    // Activate tab
+                    optionTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    optionContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${tabName}-content`) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Payment option selection
+            paymentOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    paymentOptions.forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Generate QR code for text
+            document.getElementById('generate-text').addEventListener('click', function() {
+                const text = document.getElementById('text-input').value.trim();
+                if (!text) {
+                    alert('Masukkan teks terlebih dahulu!');
+                    return;
+                }
+                
+                generateQRCode(text);
+            });
+            
+            // Generate QR code for image (placeholder functionality)
+            document.getElementById('generate-image').addEventListener('click', function() {
+                const fileInput = document.getElementById('image-upload');
+                if (!fileInput.files || !fileInput.files[0]) {
+                    alert('Pilih gambar terlebih dahulu!');
+                    return;
+                }
+                
+                // In a real implementation, you would upload the image and generate a QR code for the image URL
+                // For this example, we'll just generate a QR code with a placeholder message
+                generateQRCode('https://example.com/image-qr-placeholder');
+                alert('Fitur upload gambar dalam pengembangan. QR code yang dihasilkan adalah contoh.');
+            });
+            
+            // Generate QR code for payment
+            document.getElementById('generate-payment').addEventListener('click', function() {
+                const activePayment = document.querySelector('.payment-option.active').getAttribute('data-payment');
+                const amount = document.getElementById('payment-amount').value.trim();
+                
+                if (!amount) {
+                    alert('Masukkan jumlah pembayaran terlebih dahulu!');
+                    return;
+                }
+                
+                let paymentUrl = '';
+                if (activePayment === 'dana') {
+                    paymentUrl = `https://link.dana.id/qr/${amount}`;
+                } else if (activePayment === 'gopay') {
+                    paymentUrl = `https://gopay.page.link/${amount}`;
+                }
+                
+                const message = document.getElementById('payment-message').value;
+                if (message) {
+                    paymentUrl += `?message=${encodeURIComponent(message)}`;
+                }
+                
+                generateQRCode(paymentUrl);
+            });
+            
+            // Function to generate QR code
+            function generateQRCode(text) {
+                // Clear previous QR code
+                if (currentQRCode) {
+                    currentQRCode.clear();
+                    qrcodeDiv.innerHTML = '';
+                }
+                
+                // Generate new QR code
+                currentQRCode = new QRCode(qrcodeDiv, {
+                    text: text,
+                    width: 200,
+                    height: 200,
+                    colorDark: '#000000',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                
+                // Enable download button
+                downloadBtn.disabled = false;
+                downloadBtn.onclick = function() {
+                    const canvas = qrcodeDiv.querySelector('canvas');
+                    if (canvas) {
+                        const link = document.createElement('a');
+                        link.download = 'qrcode.png';
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                    }
+                };
+            }
+            
+            // Generate initial QR code
+            generateQRCode('https://github.com');
+        });
+    </script>
+</body>
+</html>
